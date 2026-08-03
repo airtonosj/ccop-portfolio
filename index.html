@@ -84,28 +84,153 @@
   [data-reveal].om-in { opacity: 1; transform: none; }
   @keyframes ccopSweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(320%); } }
   @keyframes ccopPulse { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+
+  /* ═══════════════════════════════════════════════════════════════════════
+     CAMADA RESPONSIVA
+     O markup do portfólio usa style= inline, e regra inline vence qualquer
+     seletor de folha de estilo — a única forma de sobrepô-la é !important.
+     Por isso o !important aparece só aqui, confinado a esta camada: nada
+     fora deste bloco depende dele.
+     Cortes: 1024px (tablet), 860px (menu vira sanduíche), 768px (telefone
+     grande), 560px (telefone).
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  /* ---- Tipografia fluida: cresce com a viewport entre um piso e um teto -- */
+  .r-h1      { font-size: clamp(33px, 7.4vw, 74px) !important; }
+  .r-h1-proj { font-size: clamp(37px, 8.2vw, 62px) !important; }
+  .r-h2      { font-size: clamp(25px, 4.3vw, 40px) !important; }
+  .r-h2-sm   { font-size: clamp(22px, 3.6vw, 32px) !important; }
+  .r-h2-xs   { font-size: clamp(20px, 3.1vw, 27px) !important; }
+  .r-lead    { font-size: clamp(15.5px, 1.9vw, 19px) !important; }
+  .r-sub     { font-size: clamp(19px, 3vw, 25px) !important; }
+  .r-metric  { font-size: clamp(30px, 5vw, 40px) !important; }
+  .r-projname{ font-size: clamp(26px, 4.6vw, 34px) !important; }
+  .r-resumo  { font-size: clamp(21px, 3.4vw, 26px) !important; }
+
+  /* ---- Respiro das seções ---------------------------------------------- */
+  .r-sec       { padding: clamp(54px, 8vw, 104px) clamp(18px, 4vw, 32px) !important; }
+  .r-sec-hero  { padding: clamp(60px, 9vw, 104px) clamp(18px, 4vw, 32px) clamp(54px, 7vw, 92px) !important; }
+  .r-sec-proj  { padding: clamp(34px, 5vw, 62px) clamp(18px, 4vw, 32px) clamp(46px, 7vw, 76px) !important; }
+  .r-sec-tight { padding: clamp(40px, 6vw, 58px) clamp(18px, 4vw, 32px) clamp(44px, 6vw, 62px) !important; }
+  .r-sec-foot  { padding: 20px clamp(18px, 4vw, 32px) !important; }
+  .r-head      { padding: 14px clamp(16px, 4vw, 32px) !important; }
+
+  /* ---- Grades: contagem de colunas por corte --------------------------- */
+  @media (max-width: 1024px) {
+    .r-cols-5 { grid-template-columns: repeat(3, 1fr) !important; }
+    .r-cols-4,
+    .r-cols-3 { grid-template-columns: repeat(2, 1fr) !important; }
+    .r-split  { grid-template-columns: 1fr !important; gap: clamp(30px, 5vw, 56px) !important; }
+  }
+  @media (max-width: 768px) {
+    .r-cols-5 { grid-template-columns: repeat(2, 1fr) !important; }
+    /* Projetos, manuais e ganhos têm texto corrido: em tablet retrato uma
+       coluna lê melhor que duas estreitas. Os cartões de atividade, mais
+       curtos, seguem em duas até 560px. */
+    .r-cols-2 { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 560px) {
+    /* Abaixo disso nada sobrevive a duas colunas legíveis. */
+    .r-cols-5, .r-cols-4, .r-cols-3, .r-cols-2s { grid-template-columns: 1fr !important; }
+  }
+
+  /* ---- Cartões e molduras --------------------------------------------- */
+  @media (max-width: 768px) {
+    .r-card      { padding: 24px 20px 22px !important; }
+    .r-card-proj { padding: 28px 22px 26px !important; }
+    .r-manual    { padding: 22px 20px !important; gap: 16px !important; }
+    .r-shot      { height: clamp(180px, 46vw, 240px) !important; }
+    .r-lightbox  { padding: 18px !important; }
+  }
+
+  /* ---- Tabela do Ratchet ---------------------------------------------- *
+     São seis colunas de dados comparáveis entre veículos; comprimir em
+     telefone destruiria a leitura. Rola na horizontal dentro do próprio
+     quadro, preservando a comparação linha a linha.                       */
+  @media (max-width: 900px) {
+    .r-table { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+    .r-row   { min-width: 700px; }
+    .r-table-hint { display: block !important; }
+  }
+  .r-table-hint { display: none; }
+
+  /* ---- Cabeçalho e menu sanduíche ------------------------------------- */
+  .r-burger { display: none; }
+
+  @media (max-width: 860px) {
+    .r-burger {
+      display: flex; align-items: center; justify-content: center;
+      margin-left: auto; width: 42px; height: 42px; flex: 0 0 auto;
+      background: transparent; border: 1px solid rgba(255,255,255,.28);
+      border-radius: 4px; color: #FFC400; cursor: pointer;
+      font-size: 19px; line-height: 1; padding: 0;
+    }
+    .r-burger:hover { border-color: #FFC400; }
+
+    .r-nav { display: none !important; }
+
+    /* O <header> é sticky, ou seja, posicionado — serve de âncora para o
+       painel absoluto, que assim ocupa a largura inteira da barra. */
+    .r-nav-open {
+      display: flex !important;
+      position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 0 !important; margin-left: 0 !important;
+      background: #0B0F3D;
+      border-bottom: 1px solid rgba(255,196,0,.28);
+      box-shadow: 0 24px 40px -24px rgba(0,0,0,.55);
+      padding: 6px 0 14px;
+    }
+    .r-nav-open > a {
+      padding: 14px clamp(16px, 4vw, 32px) !important;
+      font-size: 15px !important;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .r-nav-open > a:last-child {
+      margin: 12px clamp(16px, 4vw, 32px) 0 !important;
+      justify-content: center; border-bottom: none;
+    }
+  }
+
+  /* Em telas estreitas o subtítulo do logo rouba a linha inteira. */
+  @media (max-width: 420px) {
+    .r-brand-sub { display: none !important; }
+  }
+
+  /* ---- Ajustes finos de telefone --------------------------------------- */
+  @media (max-width: 560px) {
+    /* Botões de largura total evitam alvos de toque apertados lado a lado. */
+    .r-cta > button, .r-cta > a { width: 100%; justify-content: center; }
+    .r-filtros { width: 100%; }
+  }
+
+  /* Ninguém deve rolar a página na horizontal. */
+  html, body { overflow-x: hidden; }
+  img, svg { max-width: 100%; }
 </style>
 </helmet>
 
 <div style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #14173A; background: #F5F6FA; min-height: 100vh;">
 
   <header style="position: sticky; top: 0; z-index: 40; background: rgba(11,15,61,.92); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,196,0,.28);">
-    <div style="max-width: 1240px; margin: 0 auto; padding: 14px 32px; display: flex; align-items: center; gap: 28px;">
+    <div class="r-head" style="max-width: 1240px; margin: 0 auto; padding: 14px 32px; display: flex; align-items: center; gap: 28px;">
       <div onClick="{{ goHome }}" style="display: flex; align-items: center; gap: 14px; cursor: pointer;">
-        <div style="background: #fff; border-radius: 6px; padding: 6px 9px; display: flex; align-items: center;">
+        <div style="background: #fff; border-radius: 6px; padding: 6px 9px; display: flex; align-items: center; flex: 0 0 auto;">
           <img src="assets/edeconsil.png" alt="Edeconsil" style="height: 26px; width: auto; display: block;">
         </div>
         <div style="display: flex; flex-direction: column; gap: 2px;">
           <span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: .16em; color: #FFC400;">CCOP</span>
-          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .1em; color: rgba(255,255,255,.55); text-transform: uppercase;">Controle Operação e Produção</span>
+          <span class="r-brand-sub" style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .1em; color: rgba(255,255,255,.55); text-transform: uppercase;">Controle Operação e Produção</span>
         </div>
       </div>
-      <nav style="margin-left: auto; display: flex; align-items: center; gap: 26px;">
+      <button class="r-burger" onClick="{{ toggleMenu }}" aria-label="{{ menuLabel }}" aria-expanded="{{ menuExpandido }}">{{ menuIcone }}</button>
+      <nav class="{{ navClass }}" style="margin-left: auto; display: flex; align-items: center; gap: 26px;">
         <a href="#setor" onClick="{{ goHome }}" style="font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.78);" style-hover="color:#FFC400">O setor</a>
         <a href="#atividades" onClick="{{ goHome }}" style="font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.78);" style-hover="color:#FFC400">Atividades</a>
         <a href="#projetos" onClick="{{ goHome }}" style="font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.78);" style-hover="color:#FFC400">Projetos</a>
         <a href="#downloads" onClick="{{ goHome }}" style="font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.78);" style-hover="color:#FFC400">Manuais</a>
-        <a href="{{ appUrl }}" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 8px; background: #FFC400; color: #0B0F3D; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .02em; padding: 10px 18px; border-radius: 4px;" style-hover="background:#FFD54A;color:#0B0F3D">
+        <a href="{{ appUrl }}" target="_blank" rel="noopener" onClick="{{ fecharMenu }}" style="display: flex; align-items: center; gap: 8px; background: #FFC400; color: #0B0F3D; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: .02em; padding: 10px 18px; border-radius: 4px;" style-hover="background:#FFD54A;color:#0B0F3D">
           Acessar TEMPUS
           <span style="font-family: 'IBM Plex Mono', monospace; font-size: 14px;">↗</span>
         </a>
@@ -116,7 +241,7 @@
   <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
   <main>
 
-    <section style="position: relative; overflow: hidden; background: #0B0F3D; color: #fff; padding: 104px 32px 92px;">
+    <section class="r-sec-hero" style="position: relative; overflow: hidden; background: #0B0F3D; color: #fff; padding: 104px 32px 92px;">
       <div style="position: absolute; inset: 0; opacity: .5; background-image: linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px); background-size: 64px 64px;"></div>
       <div style="position: absolute; top: -180px; right: -120px; width: 620px; height: 620px; border-radius: 50%; background: radial-gradient(circle, rgba(255,196,0,.20), transparent 62%);"></div>
       <div style="position: relative; max-width: 1240px; margin: 0 auto;">
@@ -124,22 +249,22 @@
           <span style="width: 8px; height: 8px; border-radius: 50%; background: #34D399; box-shadow: 0 0 0 4px rgba(52,211,153,.18); animation: ccopPulse 2.4s ease-in-out infinite;"></span>
           <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.62);">Portfólio do setor · {{ ano }}</span>
         </div>
-        <h1 style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 74px; line-height: 1.02; letter-spacing: -.03em; margin: 0 0 26px; max-width: 15ch;">
+        <h1 class="r-h1" style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 74px; line-height: 1.02; letter-spacing: -.03em; margin: 0 0 26px; max-width: 15ch;">
           Dados confiáveis<br>para decidir sobre<br><span style="color: #FFC400;">a frota.</span>
         </h1>
-        <p style="font-size: 19px; line-height: 1.62; color: rgba(255,255,255,.74); max-width: 62ch; margin: 0 0 44px; text-wrap: pretty;">
+        <p class="r-lead" style="font-size: 19px; line-height: 1.62; color: rgba(255,255,255,.74); max-width: 62ch; margin: 0 0 44px; text-wrap: pretty;">
           A Coordenação de Controle Operação e Produção monitora, audita e automatiza a informação
           operacional da Edeconsil — de relatórios diários de telemetria a sistemas próprios que
           substituem planilhas por processos rastreáveis.
         </p>
-        <div style="display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 76px;">
+        <div class="r-cta" style="display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 76px;">
           <button onClick="{{ goTempus }}" style="display: flex; align-items: center; gap: 10px; background: #FFC400; border: none; cursor: pointer; color: #0B0F3D; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="background:#FFD54A">Conhecer o TEMPUS <span style="font-family:'IBM Plex Mono',monospace">→</span></button>
           <button onClick="{{ goRatchet }}" style="display: flex; align-items: center; gap: 10px; background: transparent; border: 1px solid rgba(255,255,255,.34); cursor: pointer; color: #fff; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="border-color:#FFC400;color:#FFC400">Conhecer o Ratchet <span style="font-family:'IBM Plex Mono',monospace">→</span></button>
         </div>
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.14);">
+        <div class="r-cols-4" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.14);">
           <sc-for list="{{ metricas }}" as="m" hint-placeholder-count="4">
             <div style="background: #0B0F3D; padding: 26px 24px;">
-              <div style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 40px; letter-spacing: -.02em; color: #FFC400; line-height: 1;">{{ m.valor }}</div>
+              <div class="r-metric" style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 40px; letter-spacing: -.02em; color: #FFC400; line-height: 1;">{{ m.valor }}</div>
               <div style="margin-top: 10px; font-size: 13.5px; line-height: 1.45; color: rgba(255,255,255,.66);">{{ m.rotulo }}</div>
             </div>
           </sc-for>
@@ -147,11 +272,11 @@
       </div>
     </section>
 
-    <section id="setor" style="padding: 104px 32px; background: #fff;">
-      <div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 88px; align-items: start;">
+    <section id="setor" class="r-sec" style="padding: 104px 32px; background: #fff;">
+      <div class="r-split" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 88px; align-items: start;">
         <div data-reveal="1">
           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 20px;">01 — O setor</div>
-          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.12; letter-spacing: -.02em; margin: 0 0 22px;">Controle da informação operacional, de ponta a ponta.</h2>
+          <h2 class="r-h2" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.12; letter-spacing: -.02em; margin: 0 0 22px;">Controle da informação operacional, de ponta a ponta.</h2>
           <p style="font-size: 16.5px; line-height: 1.68; color: #4B4F70; margin: 0; text-wrap: pretty;">
             O CCOP concentra o acompanhamento da frota e dos equipamentos da empresa: telemetria,
             abastecimentos, planos diários, quilometragem produzida, manutenção e rateio de custos.
@@ -159,7 +284,7 @@
             internos que padronizam e automatizam esse controle.
           </p>
         </div>
-        <div data-reveal="1" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #E3E5EF; border: 1px solid #E3E5EF;">
+        <div class="r-cols-2s" data-reveal="1" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #E3E5EF; border: 1px solid #E3E5EF;">
           <sc-for list="{{ pilares }}" as="p" hint-placeholder-count="4">
             <div style="background: #fff; padding: 32px 30px;" style-hover="background:#FAFBFF">
               <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #C79600; margin-bottom: 16px;">{{ p.cod }}</div>
@@ -171,22 +296,22 @@
       </div>
     </section>
 
-    <section id="atividades" style="padding: 104px 32px; background: #F5F6FA; border-top: 1px solid #E3E5EF;">
+    <section id="atividades" class="r-sec" style="padding: 104px 32px; background: #F5F6FA; border-top: 1px solid #E3E5EF;">
       <div style="max-width: 1240px; margin: 0 auto;">
         <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 44px;">
           <div>
             <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 20px;">02 — Atividades e rotinas</div>
-            <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.12; letter-spacing: -.02em; margin: 0; max-width: 24ch;">Doze frentes de acompanhamento contínuo.</h2>
+            <h2 class="r-h2" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.12; letter-spacing: -.02em; margin: 0; max-width: 24ch;">Doze frentes de acompanhamento contínuo.</h2>
           </div>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <div class="r-filtros" style="display: flex; flex-wrap: wrap; gap: 8px;">
             <sc-for list="{{ filtros }}" as="f" hint-placeholder-count="3">
               <button onClick="{{ f.onClick }}" style="cursor: pointer; font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 10px 16px; border-radius: 999px; background: {{ f.bg }}; color: {{ f.fg }}; border: 1px solid {{ f.bd }};">{{ f.label }} <span style="font-family: 'IBM Plex Mono', monospace; opacity: .6;">{{ f.count }}</span></button>
             </sc-for>
           </div>
         </div>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        <div class="r-cols-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
           <sc-for list="{{ atividades }}" as="a" hint-placeholder-count="9">
-            <article data-reveal="1" style="background: #fff; border: 1px solid #E3E5EF; border-top: 3px solid #191E78; padding: 30px 28px 26px; display: flex; flex-direction: column; gap: 14px;" style-hover="border-top-color:#FFC400;box-shadow:0 18px 40px -28px rgba(11,15,61,.35)">
+            <article class="r-card" data-reveal="1" style="background: #fff; border: 1px solid #E3E5EF; border-top: 3px solid #191E78; padding: 30px 28px 26px; display: flex; flex-direction: column; gap: 14px;" style-hover="border-top-color:#FFC400;box-shadow:0 18px 40px -28px rgba(11,15,61,.35)">
               <div style="display: flex; align-items: center; justify-content: space-between;">
                 <span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 13px; color: #C0C4DA;">{{ a.num }}</span>
                 <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: #191E78; background: #EDEFF9; padding: 5px 9px; border-radius: 3px;">{{ a.tag }}</span>
@@ -203,16 +328,16 @@
       </div>
     </section>
 
-    <section id="projetos" style="padding: 104px 32px; background: #0B0F3D; color: #fff;">
+    <section id="projetos" class="r-sec" style="padding: 104px 32px; background: #0B0F3D; color: #fff;">
       <div style="max-width: 1240px; margin: 0 auto;">
         <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 20px;">03 — Projetos desenvolvidos</div>
-        <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.12; letter-spacing: -.02em; margin: 0 0 12px;">Sistemas próprios, feitos dentro de casa.</h2>
+        <h2 class="r-h2" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.12; letter-spacing: -.02em; margin: 0 0 12px;">Sistemas próprios, feitos dentro de casa.</h2>
         <p style="font-size: 16.5px; line-height: 1.65; color: rgba(255,255,255,.66); max-width: 66ch; margin: 0 0 48px;">Duas soluções em uso que substituíram controles descentralizados por processos padronizados e auditáveis.</p>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+        <div class="r-cols-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
           <sc-for list="{{ projetos }}" as="p" hint-placeholder-count="2">
-            <article data-reveal="1" onClick="{{ p.onOpen }}" style="cursor: pointer; position: relative; overflow: hidden; background: linear-gradient(160deg, #141A5C, #0D1246); border: 1px solid rgba(255,255,255,.13); padding: 40px 38px 34px; display: flex; flex-direction: column; gap: 20px;" style-hover="border-color:#FFC400">
+            <article class="r-card-proj" data-reveal="1" onClick="{{ p.onOpen }}" style="cursor: pointer; position: relative; overflow: hidden; background: linear-gradient(160deg, #141A5C, #0D1246); border: 1px solid rgba(255,255,255,.13); padding: 40px 38px 34px; display: flex; flex-direction: column; gap: 20px;" style-hover="border-color:#FFC400">
               <div style="display: flex; align-items: center; justify-content: space-between;">
-                <span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 34px; letter-spacing: .04em; color: #FFC400;">{{ p.nome }}</span>
+                <span class="r-projname" style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 34px; letter-spacing: .04em; color: #FFC400;">{{ p.nome }}</span>
                 <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: #34D399; border: 1px solid rgba(52,211,153,.4); padding: 5px 10px; border-radius: 3px">{{ p.status }}</span>
               </div>
               <div style="font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; font-weight: 500; color: rgba(255,255,255,.9);">{{ p.subtitulo }}</div>
@@ -229,14 +354,14 @@
       </div>
     </section>
 
-    <section id="downloads" style="padding: 104px 32px; background: #fff;">
+    <section id="downloads" class="r-sec" style="padding: 104px 32px; background: #fff;">
       <div style="max-width: 1240px; margin: 0 auto;">
         <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 20px;">04 — Central de manuais</div>
-        <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.12; letter-spacing: -.02em; margin: 0 0 12px;">Documentação para download.</h2>
+        <h2 class="r-h2" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 40px; line-height: 1.12; letter-spacing: -.02em; margin: 0 0 12px;">Documentação para download.</h2>
         <p style="font-size: 16.5px; line-height: 1.65; color: #5B5F7B; max-width: 62ch; margin: 0 0 44px;">Manuais de operação e documentos descritivos do setor, em PDF.</p>
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: #E3E5EF; border: 1px solid #E3E5EF;">
+        <div class="r-cols-2" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: #E3E5EF; border: 1px solid #E3E5EF;">
           <sc-for list="{{ manuais }}" as="d" hint-placeholder-count="4">
-            <a href="{{ d.href }}" download="{{ d.download }}" style="background: #fff; padding: 30px 32px; display: flex; align-items: center; gap: 22px;" style-hover="background:#FAFBFF">
+            <a class="r-manual" href="{{ d.href }}" download="{{ d.download }}" style="background: #fff; padding: 30px 32px; display: flex; align-items: center; gap: 22px;" style-hover="background:#FAFBFF">
               <span style="flex: 0 0 auto; width: 46px; height: 56px; border: 1px solid {{ d.corBorda }}; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: {{ d.cor }}; background: {{ d.corFundo }};">PDF</span>
               <span style="display: flex; flex-direction: column; gap: 6px; flex: 1;">
                 <span style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 17px; color: #14173A;">{{ d.titulo }}</span>
@@ -255,17 +380,17 @@
 
   <sc-if value="{{ isTempus }}" hint-placeholder-val="{{ false }}">
   <main>
-    <section style="position: relative; overflow: hidden; background: #0B0F3D; color: #fff; padding: 62px 32px 76px;">
+    <section class="r-sec-proj" style="position: relative; overflow: hidden; background: #0B0F3D; color: #fff; padding: 62px 32px 76px;">
       <div style="position: absolute; inset: 0; opacity: .45; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 56px 56px;"></div>
       <div style="position: relative; max-width: 1240px; margin: 0 auto;">
         <button onClick="{{ goHome }}" style="cursor: pointer; background: transparent; border: none; color: rgba(255,255,255,.6); font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; padding: 0; margin-bottom: 42px;" style-hover="color:#FFC400">← Voltar ao portfólio</button>
         <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 22px;">
-          <h1 style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 62px; letter-spacing: .02em; margin: 0; color: #FFC400;">TEMPUS</h1>
+          <h1 class="r-h1-proj" style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 62px; letter-spacing: .02em; margin: 0; color: #FFC400;">TEMPUS</h1>
           <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #34D399; border: 1px solid rgba(52,211,153,.4); padding: 6px 11px;">Em operação</span>
         </div>
-        <p style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 25px; line-height: 1.35; margin: 0 0 20px; max-width: 26ch; letter-spacing: -.015em;">Sistema de Gestão de Planos Diários de Equipamentos</p>
+        <p class="r-sub" style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 25px; line-height: 1.35; margin: 0 0 20px; max-width: 26ch; letter-spacing: -.015em;">Sistema de Gestão de Planos Diários de Equipamentos</p>
         <p style="font-size: 17px; line-height: 1.68; color: rgba(255,255,255,.7); max-width: 68ch; margin: 0 0 38px; text-wrap: pretty;">Centraliza e otimiza o controle dos PDEs utilizados nas obras e centros de responsabilidade, acompanhando a utilização diária dos equipamentos e mantendo um histórico confiável das movimentações da frota. Projetado para substituir controles descentralizados e reduzir a dependência de planilhas e processos manuais.</p>
-        <div style="display: flex; flex-wrap: wrap; gap: 14px;">
+        <div class="r-cta" style="display: flex; flex-wrap: wrap; gap: 14px;">
           <a href="{{ appUrl }}" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 10px; background: #FFC400; color: #0B0F3D; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="background:#FFD54A;color:#0B0F3D">Abrir o sistema <span style="font-family: 'IBM Plex Mono', monospace;">↗</span></a>
           <a href="downloads/Manual-do-ADM-da-Obra.pdf" download="Manual-do-ADM-da-Obra.pdf" style="display: flex; align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,.34); color: #fff; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="border-color:#FFC400;color:#FFC400">Manual do ADM da Obra <span style="font-family: 'IBM Plex Mono', monospace;">↓</span></a>
           <a href="downloads/Manual-do-Operador.pdf" download="Manual-do-Operador.pdf" style="display: flex; align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,.34); color: #fff; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="border-color:#FFC400;color:#FFC400">Manual do Operador <span style="font-family: 'IBM Plex Mono', monospace;">↓</span></a>
@@ -273,11 +398,11 @@
       </div>
     </section>
 
-    <section style="padding: 88px 32px; background: #fff;">
-      <div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 72px; align-items: start;">
+    <section class="r-sec" style="padding: 88px 32px; background: #fff;">
+      <div class="r-split" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 72px; align-items: start;">
         <div>
           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 18px;">Demonstração</div>
-          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 14px;">Apontamento diário de um equipamento</h2>
+          <h2 class="r-h2-sm" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 14px;">Apontamento diário de um equipamento</h2>
           <p style="font-size: 15.5px; line-height: 1.65; color: #5B5F7B; margin: 0 0 28px;">Distribua as 24 horas do dia entre operação, marcha lenta e paradas. O sistema valida o total e sinaliza pendências antes do fechamento.</p>
 
           <div style="border: 1px solid #E3E5EF; background: #FAFBFF;">
@@ -323,8 +448,8 @@
 
         <div>
           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 18px;">Funcionalidades</div>
-          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 26px;">O que o sistema faz</h2>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <h2 class="r-h2-sm" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 26px;">O que o sistema faz</h2>
+          <div class="r-cols-2s" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <sc-for list="{{ tempusFuncs }}" as="f" hint-placeholder-count="16">
               <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: #4B4F70; background: #FAFBFF; border: 1px solid #EEF0F7; padding: 13px 14px;">
                 <span style="color: #C79600; font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 1px;">▸</span>{{ f }}
@@ -335,13 +460,13 @@
       </div>
     </section>
 
-    <section style="padding: 88px 32px; background: #F5F6FA; border-top: 1px solid #E3E5EF;">
+    <section class="r-sec" style="padding: 88px 32px; background: #F5F6FA; border-top: 1px solid #E3E5EF;">
       <div style="max-width: 1240px; margin: 0 auto;">
         <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 18px;">Telas do sistema</div>
-        <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 32px;">Interface em uso</h2>
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: start;">
+        <h2 class="r-h2-sm" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 32px;">Interface em uso</h2>
+        <div class="r-cols-3" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: start;">
           <figure onClick="{{ abrir0 }}" style="margin: 0; background: #fff; border: 1px solid {{ borda0 }}; cursor: zoom-in; transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;" style-hover="box-shadow:0 22px 44px -30px rgba(11,15,61,.5);transform:translateY(-3px)">
-            <div style="height: 152px; background: #F7F8FC; display: flex; align-items: center; justify-content: center; padding: 10px;">
+            <div class="r-shot" style="height: 152px; background: #F7F8FC; display: flex; align-items: center; justify-content: center; padding: 10px;">
               <img src="assets/tempus-painel.png" alt="Painel gerencial" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain;" />
             </div>
             <figcaption style="padding: 12px 14px; border-top: 1px solid rgba(0,0,0,.06); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
@@ -350,7 +475,7 @@
             </figcaption>
           </figure>
           <figure onClick="{{ abrir1 }}" style="margin: 0; background: #fff; border: 1px solid {{ borda1 }}; cursor: zoom-in; transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;" style-hover="box-shadow:0 22px 44px -30px rgba(11,15,61,.5);transform:translateY(-3px)">
-            <div style="height: 152px; background: #F7F8FC; display: flex; align-items: center; justify-content: center; padding: 10px;">
+            <div class="r-shot" style="height: 152px; background: #F7F8FC; display: flex; align-items: center; justify-content: center; padding: 10px;">
               <img src="assets/tempus-pde.png" alt="Nova PDE — apontamento diário" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain;" />
             </div>
             <figcaption style="padding: 12px 14px; border-top: 1px solid rgba(0,0,0,.06); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
@@ -359,7 +484,7 @@
             </figcaption>
           </figure>
           <figure onClick="{{ abrir2 }}" style="margin: 0; background: #0B0F3D; border: 1px solid {{ borda2 }}; cursor: zoom-in; transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;" style-hover="box-shadow:0 22px 44px -30px rgba(11,15,61,.5);transform:translateY(-3px)">
-            <div style="height: 152px; background: #0B0F3D; display: flex; align-items: center; justify-content: center; padding: 10px;">
+            <div class="r-shot" style="height: 152px; background: #0B0F3D; display: flex; align-items: center; justify-content: center; padding: 10px;">
               <img src="assets/tempus-operador.png" alt="PWA do operador" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain;" />
             </div>
             <figcaption style="padding: 12px 14px; border-top: 1px solid rgba(0,0,0,.06); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
@@ -369,7 +494,7 @@
           </figure>
         </div>
         <sc-if value="{{ aberta0 }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ fecharTela }}" style="position: fixed; inset: 0; z-index: 200; background: rgba(7,10,43,.9); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 40px; cursor: zoom-out;">
+          <div class="r-lightbox" onClick="{{ fecharTela }}" style="position: fixed; inset: 0; z-index: 200; background: rgba(7,10,43,.9); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 40px; cursor: zoom-out;">
             <img src="assets/tempus-painel.png" alt="Painel gerencial" style="display: block; max-width: 94vw; max-height: 78vh; object-fit: contain; background: #fff; border: 1px solid rgba(255,255,255,.2); box-shadow: 0 40px 90px -30px rgba(0,0,0,.6);" />
             <div style="text-align: center; max-width: 70ch;">
               <div style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 17px; color: #FFC400; margin-bottom: 6px;">Painel gerencial</div>
@@ -379,7 +504,7 @@
           </div>
         </sc-if>
         <sc-if value="{{ aberta1 }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ fecharTela }}" style="position: fixed; inset: 0; z-index: 200; background: rgba(7,10,43,.9); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 40px; cursor: zoom-out;">
+          <div class="r-lightbox" onClick="{{ fecharTela }}" style="position: fixed; inset: 0; z-index: 200; background: rgba(7,10,43,.9); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 40px; cursor: zoom-out;">
             <img src="assets/tempus-pde.png" alt="Nova PDE — apontamento diário" style="display: block; max-width: 94vw; max-height: 78vh; object-fit: contain; background: #fff; border: 1px solid rgba(255,255,255,.2); box-shadow: 0 40px 90px -30px rgba(0,0,0,.6);" />
             <div style="text-align: center; max-width: 70ch;">
               <div style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 17px; color: #FFC400; margin-bottom: 6px;">Nova PDE — apontamento diário</div>
@@ -389,7 +514,7 @@
           </div>
         </sc-if>
         <sc-if value="{{ aberta2 }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ fecharTela }}" style="position: fixed; inset: 0; z-index: 200; background: rgba(7,10,43,.9); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 40px; cursor: zoom-out;">
+          <div class="r-lightbox" onClick="{{ fecharTela }}" style="position: fixed; inset: 0; z-index: 200; background: rgba(7,10,43,.9); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 40px; cursor: zoom-out;">
             <img src="assets/tempus-operador.png" alt="PWA do operador" style="display: block; max-width: 94vw; max-height: 78vh; object-fit: contain; background: #fff; border: 1px solid rgba(255,255,255,.2); box-shadow: 0 40px 90px -30px rgba(0,0,0,.6);" />
             <div style="text-align: center; max-width: 70ch;">
               <div style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 17px; color: #FFC400; margin-bottom: 6px;">PWA do operador</div>
@@ -404,13 +529,13 @@
 
     
 
-    <section style="padding: 58px 32px 62px; background: #0B0F3D; color: #fff;">
+    <section class="r-sec-tight" style="padding: 58px 32px 62px; background: #0B0F3D; color: #fff;">
       <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.45);">Contribuições</span><div style="max-width: 1240px; margin: 0 auto;">
         <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 26px;">
-          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 27px; line-height: 1.2; letter-spacing: -.02em; margin: 0;">O que muda na operação</h2>
+          <h2 class="r-h2-xs" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 27px; line-height: 1.2; letter-spacing: -.02em; margin: 0;">O que muda na operação</h2>
           
         </div>
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
+        <div class="r-cols-2" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
           <sc-for list="{{ tempusGanhos }}" as="g" hint-placeholder-count="4">
             <div style="background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.12); border-left: 2px solid #FFC400; padding: 20px 22px; display: flex; gap: 16px; align-items: baseline;">
               <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 12px; color: #FFC400; flex: 0 0 auto;">{{ g.cod }}</span>
@@ -430,34 +555,34 @@
 
   <sc-if value="{{ isRatchet }}" hint-placeholder-val="{{ false }}">
   <main>
-    <section style="position: relative; overflow: hidden; background: #0B0F3D; color: #fff; padding: 62px 32px 76px;">
+    <section class="r-sec-proj" style="position: relative; overflow: hidden; background: #0B0F3D; color: #fff; padding: 62px 32px 76px;">
       <div style="position: absolute; inset: 0; opacity: .45; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 56px 56px;"></div>
       <div style="position: relative; max-width: 1240px; margin: 0 auto;">
         <button onClick="{{ goHome }}" style="cursor: pointer; background: transparent; border: none; color: rgba(255,255,255,.6); font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; padding: 0; margin-bottom: 42px;" style-hover="color:#FFC400">← Voltar ao portfólio</button>
         <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 22px;">
-          <h1 style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 62px; letter-spacing: .02em; margin: 0; color: #FFC400;">RATCHET</h1>
+          <h1 class="r-h1-proj" style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 62px; letter-spacing: .02em; margin: 0; color: #FFC400;">RATCHET</h1>
           <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #34D399; border: 1px solid rgba(52,211,153,.4); padding: 6px 11px;">Em operação</span>
         </div>
-        <p style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 25px; line-height: 1.35; margin: 0 0 20px; max-width: 26ch; letter-spacing: -.015em;">Sistema de Conferência e Análise de Abastecimentos</p>
+        <p class="r-sub" style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 25px; line-height: 1.35; margin: 0 0 20px; max-width: 26ch; letter-spacing: -.015em;">Sistema de Conferência e Análise de Abastecimentos</p>
         <p style="font-size: 17px; line-height: 1.68; color: rgba(255,255,255,.7); max-width: 68ch; margin: 0 0 38px; text-wrap: pretty;">Roda diretamente no navegador e consolida os relatórios de abastecimento de diferentes fornecedores e da bomba interna, organizando tudo por veículo. Calcula médias de consumo, identifica dados fora do padrão e auxilia na correção de inconsistências antes do fechamento mensal.</p>
-        <div style="display: flex; flex-wrap: wrap; gap: 14px;">
+        <div class="r-cta" style="display: flex; flex-wrap: wrap; gap: 14px;">
           <a href="downloads/Manual-do-Ratchet.pdf" download="Manual-do-Ratchet.pdf" style="display: flex; align-items: center; gap: 10px; background: #FFC400; color: #0B0F3D; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="background:#FFD54A;color:#0B0F3D">Manual em PDF <span style="font-family: 'IBM Plex Mono', monospace;">↓</span></a>
           <span style="display: flex; align-items: center; gap: 10px; border: 1px dashed rgba(255,255,255,.3); color: rgba(255,255,255,.55); font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; padding: 15px 22px; border-radius: 4px;">Link do sistema — a definir</span>
         </div>
       </div>
     </section>
 
-    <section style="padding: 88px 32px; background: #fff;">
+    <section class="r-sec" style="padding: 88px 32px; background: #fff;">
       <div style="max-width: 1240px; margin: 0 auto;">
         <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 18px;">Demonstração</div>
         <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; flex-wrap: wrap; margin-bottom: 12px;">
-          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0; max-width: 30ch;">Conferência de um período consolidado</h2>
+          <h2 class="r-h2-sm" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0; max-width: 30ch;">Conferência de um período consolidado</h2>
           <button onClick="{{ toggleAnalise }}" style="cursor: pointer; background: #191E78; border: none; color: #FFC400; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14px; padding: 14px 24px; border-radius: 4px;" style-hover="background:#0B0F3D">{{ analiseBotao }}</button>
         </div>
         <p style="font-size: 15.5px; line-height: 1.65; color: #5B5F7B; margin: 0 0 30px; max-width: 74ch;">Base consolidada de MaxiFrota, Shell Box, Ticket Log, Alelo e bomba interna. Ao rodar a análise, o sistema calcula médias, desconsidera ARLA 32 e destaca as linhas fora do padrão com memória de cálculo.</p>
 
-        <div style="border: 1px solid #E3E5EF; overflow: hidden;">
-          <div style="display: grid; grid-template-columns: 1.1fr 1.3fr 0.8fr 0.8fr 0.8fr 1.6fr; background: #0B0F3D; color: rgba(255,255,255,.72); font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;">
+        <div class="r-table" style="border: 1px solid #E3E5EF; overflow: hidden;">
+          <div class="r-row" style="display: grid; grid-template-columns: 1.1fr 1.3fr 0.8fr 0.8fr 0.8fr 1.6fr; background: #0B0F3D; color: rgba(255,255,255,.72); font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;">
             <div style="padding: 13px 16px;">Placa</div>
             <div style="padding: 13px 16px;">Veículo</div>
             <div style="padding: 13px 16px; text-align: right;">Litros</div>
@@ -466,7 +591,7 @@
             <div style="padding: 13px 16px;">Situação</div>
           </div>
           <sc-for list="{{ linhas }}" as="l" hint-placeholder-count="6">
-            <div style="display: grid; grid-template-columns: 1.1fr 1.3fr 0.8fr 0.8fr 0.8fr 1.6fr; border-top: 1px solid #EEF0F7; background: {{ l.bg }}; font-size: 13.5px; color: #14173A; transition: background .3s ease;">
+            <div class="r-row" style="display: grid; grid-template-columns: 1.1fr 1.3fr 0.8fr 0.8fr 0.8fr 1.6fr; border-top: 1px solid #EEF0F7; background: {{ l.bg }}; font-size: 13.5px; color: #14173A; transition: background .3s ease;">
               <div style="padding: 15px 16px; font-family: 'IBM Plex Mono', monospace;">{{ l.placa }}</div>
               <div style="padding: 15px 16px;">{{ l.veiculo }}</div>
               <div style="padding: 15px 16px; text-align: right; font-family: 'IBM Plex Mono', monospace;">{{ l.litros }}</div>
@@ -476,23 +601,24 @@
             </div>
           </sc-for>
         </div>
+        <div class="r-table-hint" style="margin-top: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9297B5;">Arraste a tabela para o lado para ver todas as colunas →</div>
 
-        <div style="margin-top: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #E3E5EF; border: 1px solid #E3E5EF;">
+        <div class="r-cols-4" style="margin-top: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #E3E5EF; border: 1px solid #E3E5EF;">
           <sc-for list="{{ resumo }}" as="r" hint-placeholder-count="4">
             <div style="background: #FAFBFF; padding: 22px 24px;">
               <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: #9297B5; margin-bottom: 10px;">{{ r.rotulo }}</div>
-              <div style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -.02em; color: {{ r.cor }};">{{ r.valor }}</div>
+              <div class="r-resumo" style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -.02em; color: {{ r.cor }};">{{ r.valor }}</div>
             </div>
           </sc-for>
         </div>
       </div>
     </section>
 
-    <section style="padding: 88px 32px; background: #F5F6FA; border-top: 1px solid #E3E5EF;">
-      <div style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 0.75fr 1.25fr; gap: 64px; align-items: start;">
+    <section class="r-sec" style="padding: 88px 32px; background: #F5F6FA; border-top: 1px solid #E3E5EF;">
+      <div class="r-split" style="max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: 0.75fr 1.25fr; gap: 64px; align-items: start;">
         <div>
           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 18px;">Fontes de dados</div>
-          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 24px;">Cinco origens, uma base única</h2>
+          <h2 class="r-h2-sm" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 24px;">Cinco origens, uma base única</h2>
           <div style="display: flex; flex-direction: column; gap: 8px;">
             <sc-for list="{{ fontes }}" as="f" hint-placeholder-count="6">
               <div style="background: #fff; border: 1px solid #E3E5EF; padding: 14px 16px; font-size: 14.5px; color: #4B4F70; display: flex; align-items: center; gap: 12px;">
@@ -504,8 +630,8 @@
         </div>
         <div>
           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 18px;">Funcionalidades</div>
-          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 26px;">Do arquivo bruto ao fechamento</h2>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <h2 class="r-h2-sm" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 26px;">Do arquivo bruto ao fechamento</h2>
+          <div class="r-cols-2s" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <sc-for list="{{ ratchetFuncs }}" as="f" hint-placeholder-count="20">
               <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: #4B4F70; background: #fff; border: 1px solid #EEF0F7; padding: 13px 14px;">
                 <span style="color: #C79600; font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 1px;">▸</span>{{ f }}
@@ -516,11 +642,11 @@
       </div>
     </section>
 
-    <section style="padding: 88px 32px; background: #fff;">
+    <section class="r-sec" style="padding: 88px 32px; background: #fff;">
       <div style="max-width: 1240px; margin: 0 auto;">
         <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 18px;">Saídas</div>
-        <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 32px;">Relatórios gerados</h2>
-        <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: #E3E5EF; border: 1px solid #E3E5EF; margin-bottom: 44px;">
+        <h2 class="r-h2-sm" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 32px;">Relatórios gerados</h2>
+        <div class="r-cols-5" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: #E3E5EF; border: 1px solid #E3E5EF; margin-bottom: 44px;">
           <sc-for list="{{ saidas }}" as="s" hint-placeholder-count="5">
             <div style="background: #fff; padding: 26px 22px;">
               <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #C79600; margin-bottom: 14px;">{{ s.cod }}</div>
@@ -530,7 +656,7 @@
         </div>
         <!-- Prints do Ratchet: substitua os dois arquivos em assets/ pelos prints
              reais mantendo os mesmos nomes. Proporção recomendada 16:10. -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="r-cols-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
           <figure style="margin: 0; background: #fff; border: 1px solid #E3E5EF;">
             <div style="aspect-ratio: 16/10; background: #F7F8FC; display: flex; align-items: center; justify-content: center; overflow: hidden;">
               <img src="assets/ratchet-conferencia.png" alt="Tela de conferência de abastecimentos do Ratchet" loading="lazy" decoding="async" style="display: block; width: 100%; height: 100%; object-fit: contain;">
@@ -547,13 +673,13 @@
       </div>
     </section>
 
-    <section style="padding: 58px 32px 62px; background: #0B0F3D; color: #fff;">
+    <section class="r-sec-tight" style="padding: 58px 32px 62px; background: #0B0F3D; color: #fff;">
       <div style="max-width: 1240px; margin: 0 auto;">
         <div style="display: flex; align-items: baseline; gap: 18px; margin-bottom: 26px;">
           <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.45);">Contribuições</span>
-          <h2 style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 27px; line-height: 1.2; letter-spacing: -.02em; margin: 0;">O que muda no fechamento</h2>
+          <h2 class="r-h2-xs" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 27px; line-height: 1.2; letter-spacing: -.02em; margin: 0;">O que muda no fechamento</h2>
         </div>
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
+        <div class="r-cols-2" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;">
           <sc-for list="{{ ratchetGanhos }}" as="g" hint-placeholder-count="4">
             <div style="background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.12); border-left: 2px solid #FFC400; padding: 20px 22px; display: flex; gap: 16px; align-items: baseline;">
               <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 12px; color: #FFC400; flex: 0 0 auto;">{{ g.cod }}</span>
@@ -654,13 +780,14 @@ const SHOTS = [
 ];
 
 class Component extends DCLogic {
-  state = { view: viewFromHash(), resp: 'Todos', eq: 0, op: 9.5, ml: 3, par: 2, analisado: false, shot: null };
+  state = { view: viewFromHash(), resp: 'Todos', eq: 0, op: 9.5, ml: 3, par: 2, analisado: false, shot: null, menu: false };
 
   go(view) {
     return () => {
       const url = view === 'home' ? location.pathname + location.search : '#/' + view;
       if (viewFromHash() !== view) history.pushState(null, '', url);
-      this.setState({ view, shot: null });
+      // menu: false fecha o painel do sanduíche ao navegar por um dos links.
+      this.setState({ view, shot: null, menu: false });
       window.scrollTo(0, 0);
     };
   }
@@ -668,13 +795,22 @@ class Component extends DCLogic {
   componentDidMount() {
     this.observe();
     if (!this.onNav) {
-      this.onNav = () => { this.setState({ view: viewFromHash(), shot: null }); window.scrollTo(0, 0); };
+      this.onNav = () => { this.setState({ view: viewFromHash(), shot: null, menu: false }); window.scrollTo(0, 0); };
       window.addEventListener('popstate', this.onNav);
+    }
+    // Se a janela crescer além do corte do sanduíche com o painel aberto, o
+    // estado precisa voltar a fechado — senão ao reduzir de novo ele reaparece.
+    if (!this.onResize) {
+      this.onResize = () => {
+        if (window.innerWidth > 860 && this.state.menu) this.setState({ menu: false });
+      };
+      window.addEventListener('resize', this.onResize);
     }
   }
   componentDidUpdate() { this.observe(); }
   componentWillUnmount() {
     if (this.onNav) { window.removeEventListener('popstate', this.onNav); this.onNav = null; }
+    if (this.onResize) { window.removeEventListener('resize', this.onResize); this.onResize = null; }
     if (this.io) { this.io.disconnect(); this.io = null; }
   }
 
@@ -759,6 +895,15 @@ class Component extends DCLogic {
       appUrl: TEMPUS_URL,
       isHome: s.view === 'home', isTempus: s.view === 'tempus', isRatchet: s.view === 'ratchet',
       goHome: this.go('home'), goTempus: this.go('tempus'), goRatchet: this.go('ratchet'),
+
+      /* Menu sanduíche — só tem efeito visual abaixo de 860px, onde a camada
+         responsiva esconde .r-nav e transforma .r-nav-open em painel. */
+      navClass: s.menu ? 'r-nav r-nav-open' : 'r-nav',
+      menuIcone: s.menu ? '✕' : '☰',
+      menuLabel: s.menu ? 'Fechar menu' : 'Abrir menu',
+      menuExpandido: s.menu ? 'true' : 'false',
+      toggleMenu: () => this.setState({ menu: !s.menu }),
+      fecharMenu: () => this.setState({ menu: false }),
 
       metricas: [
         { valor: '2', rotulo: 'Sistemas próprios em operação' },
