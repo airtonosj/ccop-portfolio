@@ -52,6 +52,54 @@ Depois abra <http://localhost:8000>.
 
 ---
 
+## Modo apresentação (telão do escritório)
+
+Acrescente `?tv=1` ao endereço e o site passa a se apresentar sozinho: percorre
+cada tela de cima a baixo, parando alguns segundos por altura de janela para dar
+tempo de leitura, e ao terminar passa para a próxima — em ciclo infinito.
+
+<https://airtonosj.github.io/ccop-portfolio/?tv=1>
+
+Sem o `?tv=1` nada muda: o `apresentacao.js` sai na primeira linha.
+
+### Parâmetros
+
+| Parâmetro | Padrão | O que faz |
+| --- | --- | --- |
+| `tv` | — | Liga o modo. Só a presença basta (`?tv=1`). |
+| `seg` | `7` | Segundos parado em cada altura de tela. `?tv=1&seg=10` deixa mais lento. |
+| `telas` | `home,tempus,ratchet` | Quais telas entram no ciclo e em que ordem. Ex.: `?tv=1&telas=tempus,ratchet`. |
+
+### Controles
+
+Pensado para ficar sozinho, mas atende quem chega perto:
+
+| Ação | Efeito |
+| --- | --- |
+| Qualquer clique, rolagem ou tecla | Pausa por 45s e volta sozinho |
+| Espaço | Pausa/retoma sem tempo limite |
+| ← → | Tela anterior / próxima |
+
+O cursor do mouse desaparece após 4s parado. O ponteiro de progresso no canto
+inferior direito mostra a tela atual e a barra no topo, a posição na tela.
+
+### Deixando no ar em um Windows
+
+Chrome em modo quiosque (tela cheia, sem barra de endereço):
+
+```bash
+"C:\Program Files\Google\Chrome\Application\chrome.exe" --kiosk --incognito --noerrdialogs --disable-session-crashed-bubble "https://airtonosj.github.io/ccop-portfolio/?tv=1"
+```
+
+Para subir junto com o Windows, crie um atalho com essa linha e coloque-o em
+`shell:startup` (Win+R → `shell:startup`). Vale desligar a suspensão do monitor
+nas opções de energia — o modo apresentação pede o *wake lock* do navegador,
+mas ele não é garantido em toda configuração.
+
+Sair do quiosque: `Alt`+`F4`.
+
+---
+
 ## O que falta preencher
 
 | Pendência | Onde |
@@ -67,6 +115,7 @@ Depois abra <http://localhost:8000>.
 ```
 .
 ├── index.html          página única (template + estado + lógica)
+├── apresentacao.js     modo telão, inerte sem ?tv=1 na URL
 ├── support.js          runtime de componentes (não editar)
 ├── vendor/             React 18.3.1 + ReactDOM UMD, vendorizados
 ├── assets/             logo, ícones, capa social e prints dos sistemas
