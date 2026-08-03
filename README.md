@@ -104,9 +104,12 @@ Sair do quiosque: `Alt`+`F4`.
 
 | Pendência | Onde |
 | --- | --- |
-| Prints reais do Ratchet | `assets/ratchet-gestao-bombas.png` e `assets/ratchet-bomba-interna.png` — hoje são placeholders. Basta sobrescrever com os prints reais mantendo os nomes; a moldura aceita qualquer proporção (`object-fit: contain`), e ~1600×790 é o ideal. |
 | Endereço definitivo do TEMPUS | `index.html`, constante `TEMPUS_URL` (um único lugar) |
 | Link do sistema Ratchet | `index.html`, o texto "Link do sistema — a definir" na vista do Ratchet |
+
+Para trocar um print de sistema, basta sobrescrever o arquivo em `assets/`
+mantendo o nome. As molduras usam `object-fit: contain`, então qualquer
+proporção funciona sem distorcer.
 
 ---
 
