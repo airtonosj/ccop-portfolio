@@ -665,22 +665,59 @@
             </div>
           </sc-for>
         </div>
-        <!-- Prints do Ratchet: substitua os dois arquivos em assets/ pelos prints
-             reais mantendo os mesmos nomes. Proporção recomendada 16:10. -->
-        <div class="r-cols-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-          <figure style="margin: 0; background: #fff; border: 1px solid #E3E5EF;">
-            <div style="aspect-ratio: 16/10; background: #F7F8FC; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-              <img src="assets/ratchet-conferencia.png" alt="Tela de conferência de abastecimentos do Ratchet" loading="lazy" decoding="async" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+      </div>
+    </section>
+
+    <!-- Telas do sistema — mesmo esquema da seção equivalente do TEMPUS:
+         moldura clicável que abre a imagem em tamanho real. O fundo escuro das
+         molduras acompanha a interface do Ratchet, que é de tema escuro.
+         Reusa o estado `shot` do TEMPUS: as telas nunca coexistem (só uma
+         renderiza por vez) e `shot` volta a null em toda troca de tela. -->
+    <section class="r-sec" style="padding: 88px 32px; background: #F5F6FA; border-top: 1px solid #E3E5EF;">
+      <div style="max-width: 1240px; margin: 0 auto;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 18px;">Telas do sistema</div>
+        <h2 class="r-h2-sm" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 32px;">Interface em uso</h2>
+        <div class="r-cols-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start;">
+          <figure onClick="{{ abrir0 }}" style="margin: 0; background: #0B0F3D; border: 1px solid {{ borda0 }}; cursor: zoom-in; transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;" style-hover="box-shadow:0 22px 44px -30px rgba(11,15,61,.5);transform:translateY(-3px)">
+            <div class="r-shot" style="height: 200px; background: #0B0F3D; display: flex; align-items: center; justify-content: center; padding: 10px;">
+              <img src="assets/ratchet-gestao-bombas.png" alt="Gestão de bombas — abastecimentos por veículo, médias e inconsistências" loading="lazy" decoding="async" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain;" />
             </div>
-            <figcaption style="padding: 12px 14px; border-top: 1px solid #EEF0F7; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: #9297B5;">Tela de conferência</figcaption>
+            <figcaption style="padding: 12px 14px; border-top: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.55);">Gestão de bombas</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C79600;">⤢</span>
+            </figcaption>
           </figure>
-          <figure style="margin: 0; background: #fff; border: 1px solid #E3E5EF;">
-            <div style="aspect-ratio: 16/10; background: #F7F8FC; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-              <img src="assets/ratchet-relatorio.png" alt="Relatório de abastecimentos por veículo gerado pelo Ratchet" loading="lazy" decoding="async" style="display: block; width: 100%; height: 100%; object-fit: contain;">
+          <figure onClick="{{ abrir1 }}" style="margin: 0; background: #0B0F3D; border: 1px solid {{ borda1 }}; cursor: zoom-in; transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;" style-hover="box-shadow:0 22px 44px -30px rgba(11,15,61,.5);transform:translateY(-3px)">
+            <div class="r-shot" style="height: 200px; background: #0B0F3D; display: flex; align-items: center; justify-content: center; padding: 10px;">
+              <img src="assets/ratchet-bomba-interna.png" alt="Bomba interna — diagnóstico de odômetro dos lançamentos internos" loading="lazy" decoding="async" style="display: block; max-width: 100%; max-height: 100%; object-fit: contain;" />
             </div>
-            <figcaption style="padding: 12px 14px; border-top: 1px solid #EEF0F7; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: #9297B5;">Relatório por veículo</figcaption>
+            <figcaption style="padding: 12px 14px; border-top: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.55);">Bomba interna</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #C79600;">⤢</span>
+            </figcaption>
           </figure>
         </div>
+        <sc-if value="{{ aberta0 }}" hint-placeholder-val="{{ false }}">
+          <div class="r-lightbox" onClick="{{ fecharTela }}" style="position: fixed; inset: 0; z-index: 200; background: rgba(7,10,43,.9); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 40px; cursor: zoom-out;">
+            <img src="assets/ratchet-gestao-bombas.png" alt="Gestão de bombas — abastecimentos por veículo, médias e inconsistências" style="display: block; max-width: 94vw; max-height: 78vh; object-fit: contain; background: #0B0F3D; border: 1px solid rgba(255,255,255,.2); box-shadow: 0 40px 90px -30px rgba(0,0,0,.6);" />
+            <div style="text-align: center; max-width: 70ch;">
+              <div style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 17px; color: #FFC400; margin-bottom: 6px;">Gestão de bombas</div>
+              <div style="font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.72);">Abastecimentos por veículo com médias, totais do período e as linhas fora do padrão destacadas. As fontes ficam em abas: bomba interna, MaxiFrota, Shell Box, Ticket Log e Alelo.</div>
+              <div style="margin-top: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45);">Clique para fechar</div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ aberta1 }}" hint-placeholder-val="{{ false }}">
+          <div class="r-lightbox" onClick="{{ fecharTela }}" style="position: fixed; inset: 0; z-index: 200; background: rgba(7,10,43,.9); backdrop-filter: blur(4px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 40px; cursor: zoom-out;">
+            <img src="assets/ratchet-bomba-interna.png" alt="Bomba interna — diagnóstico de odômetro dos lançamentos internos" style="display: block; max-width: 94vw; max-height: 78vh; object-fit: contain; background: #0B0F3D; border: 1px solid rgba(255,255,255,.2); box-shadow: 0 40px 90px -30px rgba(0,0,0,.6);" />
+            <div style="text-align: center; max-width: 70ch;">
+              <div style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 17px; color: #FFC400; margin-bottom: 6px;">Bomba interna</div>
+              <div style="font-size: 14px; line-height: 1.55; color: rgba(255,255,255,.72);">Diagnóstico de odômetro dos lançamentos internos: zerados, valores negativos, KM rodado acima de 5.000 e hodômetro implausível, com as leituras válidas de cada veículo.</div>
+              <div style="margin-top: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.45);">Clique para fechar</div>
+            </div>
+          </div>
+        </sc-if>
+        <div style="margin-top: 16px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #9297B5;">Clique em uma tela para ver em tamanho real</div>
       </div>
     </section>
 
