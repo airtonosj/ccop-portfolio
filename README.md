@@ -1,0 +1,105 @@
+# Portfólio CCOP — Edeconsil
+
+Site estático do portfólio da **Coordenação de Controle Operação e Produção (CCOP)** da Edeconsil.
+Página única com três vistas: portfólio do setor, projeto **TEMPUS** e projeto **RATCHET**.
+
+Não tem build, não tem dependência de `npm`. É HTML, CSS e JavaScript servidos direto.
+
+---
+
+## Publicar
+
+**Endereço do site:** <https://airtonosj.github.io/ccop-portfolio/>
+
+O workflow em `.github/workflows/deploy.yml` publica a cada `push` na `main`:
+
+```bash
+git push
+```
+
+Também dá para rodar à mão em **Actions → Publicar no GitHub Pages → Run workflow**.
+
+Se o Pages ainda não estiver ligado: **Settings → Pages → Build and deployment →
+Source: GitHub Actions**.
+
+### Se trocar o endereço
+
+Renomear o repositório ou apontar um domínio próprio muda a URL. Nesse caso atualize:
+
+| Arquivo | O que contém |
+| --- | --- |
+| `index.html` | `canonical`, `og:url`, `og:image` (bloco comentado no `<head>`) |
+| `robots.txt` | linha `Sitemap:` |
+| `sitemap.xml` | as quatro tags `<loc>` |
+
+> Este repositório é **público** — os nomes dos responsáveis pelas atividades e o
+> endereço do TEMPUS ficam visíveis. Para ocultar os nomes sem mexer no conteúdo,
+> passe a prop `mostrarResponsaveis` como `false`: os cartões passam a exibir
+> "CCOP" no lugar da pessoa.
+
+---
+
+## Testar antes de publicar
+
+O site **precisa ser servido por HTTP** — abrir `index.html` com duplo clique (`file://`)
+não funciona, porque o runtime lê o próprio HTML via `fetch`.
+
+```bash
+python -m http.server 8000
+```
+
+Depois abra <http://localhost:8000>.
+
+---
+
+## O que falta preencher
+
+| Pendência | Onde |
+| --- | --- |
+| Prints reais do Ratchet | `assets/ratchet-conferencia.png` e `assets/ratchet-relatorio.png` — hoje são placeholders. Mantenha os nomes e a proporção 16:10. |
+| Endereço definitivo do TEMPUS | `index.html`, constante `TEMPUS_URL` (um único lugar) |
+| Link do sistema Ratchet | `index.html`, o texto "Link do sistema — a definir" na vista do Ratchet |
+
+---
+
+## Estrutura
+
+```
+.
+├── index.html          página única (template + estado + lógica)
+├── support.js          runtime de componentes (não editar)
+├── vendor/             React 18.3.1 + ReactDOM UMD, vendorizados
+├── assets/             logo, ícones, capa social e prints dos sistemas
+├── downloads/          manuais em PDF
+├── 404.html            página de erro
+├── robots.txt
+├── sitemap.xml
+├── .nojekyll           desliga o Jekyll no GitHub Pages
+└── .github/workflows/deploy.yml
+```
+
+### Por que `vendor/`
+
+`support.js` busca React em `unpkg.com` **só se `window.React` ainda não existir**
+(`support.js:1838`). O `index.html` carrega as cópias locais antes dele, então o site
+renderiza sem depender de CDN externo — importante em rede corporativa com saída restrita.
+Os dois arquivos foram verificados por SRI contra os hashes que já constam no `support.js`.
+
+### Dependência externa que sobrou
+
+As fontes vêm do Google Fonts (`fonts.googleapis.com`). Se o acesso for bloqueado, o site
+continua funcionando com as fontes de sistema — a degradação é apenas tipográfica.
+Para eliminar isso também, baixe os `.woff2` de Archivo e IBM Plex Sans/Mono, coloque em
+`assets/fonts/` e troque o `<link>` do Google por `@font-face` locais.
+
+---
+
+## Notas técnicas
+
+- **Rotas por hash** — `#/tempus` e `#/ratchet` têm endereço próprio: o link pode ser
+  compartilhado, o F5 mantém a página e o "voltar" do navegador funciona.
+- **Renderização no cliente** — o conteúdo é montado por JavaScript. Há um `<noscript>`
+  com o resumo do setor e os links dos manuais para quem estiver sem JS.
+- **Não foram publicados** a pasta `uploads/` (≈7 MB de duplicatas dos arquivos que já
+  estão em `assets/` e `downloads/`), o `.thumbnail` e o `image-slot.js` — este último é
+  ferramenta de edição do editor de design e não tem função em produção.

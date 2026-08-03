@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Atualize se o repositório for renomeado ou ganhar domínio próprio.
+Sitemap: https://airtonosj.github.io/ccop-portfolio/sitemap.xml

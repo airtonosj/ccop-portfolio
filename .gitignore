@@ -1,0 +1,16 @@
+# Sistema
+Thumbs.db
+Desktop.ini
+desktop.ini
+.DS_Store
+
+# Artefatos do editor de design (não vão para produção)
+image-slot.js
+.image-slots.state.json
+.thumbnail
+uploads/
+
+# Editores
+.vscode/
+.idea/
+*.swp

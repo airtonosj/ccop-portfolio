@@ -1,0 +1,25 @@
+# Este é um site estático servido byte a byte pelo GitHub Pages, então os
+# finais de linha ficam fixos em LF no repositório e no checkout — evita que
+# o core.autocrlf da máquina introduza diferenças conforme quem clonou.
+* text=auto eol=lf
+
+# Binários: nunca converter nem tentar diff de texto.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.ico  binary
+*.pdf  binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+
+# SVG é texto, mas mantém LF.
+*.svg text eol=lf
+
+# React vendorizado: não conta como código do projeto nas estatísticas do
+# GitHub e não polui a revisão de diffs.
+vendor/** linguist-vendored
+support.js linguist-vendored
