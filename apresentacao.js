@@ -178,7 +178,18 @@
       '  max-width:80vw;text-align:center;line-height:1.45;overflow-wrap:anywhere}',
       '#tv-aviso.on{opacity:1}',
       /* Num telão ninguém toca na tela nem arrasta tabela. */
-      '.r-burger,.r-table-hint{display:none !important}'
+      '.r-burger,.r-table-hint{display:none !important}',
+      /* Abaixo de 860px o site troca o menu pelo botão sanduíche — que a regra
+         acima esconde. As duas coisas juntas deixavam o cabeçalho sem
+         navegação alguma em janela estreita: sobrava só o logo. Aqui o menu
+         volta a aparecer sempre. No telão ele não é para ser usado, é para ser
+         lido, então fica em linha e quebra se a largura apertar, em vez de
+         virar painel sanfonado. Precisa de `#dc-root` para vencer o
+         `display:none !important` da media query, e de `!important` no gap
+         para vencer o estilo inline do próprio <nav>. */
+      '#dc-root .r-nav{display:flex !important;flex-wrap:wrap;',
+      '  justify-content:flex-end;gap:12px 26px !important}',
+      '#dc-root .r-head{flex-wrap:wrap;gap:10px 28px !important}'
     ].join('');
     document.head.appendChild(css);
 
