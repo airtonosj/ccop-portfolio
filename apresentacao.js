@@ -21,9 +21,8 @@
    sozinho depois de um tempo. Espaço alterna pausa fixa; setas avançam ou
    voltam de tela.
 
-   Os botões "Abrir o sistema" (TEMPUS e RATCHET) recebem tratamento próprio
-   aqui: no telão o endereço aparece escrito embaixo do rótulo, e o clique não
-   navega — ver `mostrarEnderecos` e `protegerLinksExternos`.
+   Nos botões "Abrir o sistema" (TEMPUS e RATCHET) o clique não navega: mostra o
+   endereço no centro da tela — ver `protegerLinksExternos`.
    =========================================================================== */
 (function () {
   'use strict';
@@ -136,19 +135,14 @@
     });
   }
 
-  /* Num telão o botão "Abrir o sistema" não leva a nada: ninguém clica num
-     monitor pendurado na parede. Escrever o endereço embaixo do rótulo é o que
-     torna o link útil ali — quem está olhando anota e abre no seu computador.
-     O atributo é lido pelo `::after` do CSS abaixo; o React não gerencia
-     `data-*` que não criou, então a marca sobrevive às re-renderizações e não
-     mexe na árvore de elementos dele. */
-  function mostrarEnderecos() {
-    document.querySelectorAll('a[target="_blank"]:not([data-tv-url])').forEach(function (a) {
-      try {
-        var u = new URL(a.href);
-        a.setAttribute('data-tv-url', u.host + (u.pathname === '/' ? '' : u.pathname));
-      } catch (e) { /* href fora do padrão: deixa o botão como estava */ }
-    });
+  /* Endereço curto, para caber no aviso central sem virar um parágrafo. */
+  function endereco(href) {
+    try {
+      var u = new URL(href);
+      return u.host + (u.pathname === '/' ? '' : u.pathname);
+    } catch (e) {
+      return href;
+    }
   }
 
   /* Gatilhos por tela: coisas que valem ser acionadas sozinhas para o telão
@@ -183,11 +177,6 @@
       '  letter-spacing:.04em;opacity:0;transition:opacity .25s;pointer-events:none;',
       '  max-width:80vw;text-align:center;line-height:1.45;overflow-wrap:anywhere}',
       '#tv-aviso.on{opacity:1}',
-      /* Endereço do sistema escrito embaixo do rótulo do próprio botão. */
-      'a[data-tv-url]{flex-wrap:wrap}',
-      'a[data-tv-url]::after{content:attr(data-tv-url);flex:0 0 100%;',
-      "  font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:500;font-size:11px;",
-      '  letter-spacing:.06em;text-transform:none;opacity:.72}',
       /* Num telão ninguém toca na tela nem arrasta tabela. */
       '.r-burger,.r-table-hint{display:none !important}'
     ].join('');
@@ -289,7 +278,7 @@
       // Só o `preventDefault`: o evento segue subindo para que `marcarInteracao`
       // registre a presença de alguém e o laço pause como em qualquer clique.
       e.preventDefault();
-      avisar('Acesse pelo computador: ' + (a.getAttribute('data-tv-url') || a.href));
+      avisar('Acesse pelo computador: ' + endereco(a.href));
     }, true);
   }
 
@@ -342,7 +331,6 @@
         irParaTela(tela);
         await esperar(900);        // espera o React montar a tela
         redeDeSeguranca();
-        mostrarEnderecos();       // antes do primeiro passo, para não piscar
 
         await percorrerTela(tela);
       } catch (e) {
@@ -383,10 +371,6 @@
     });
     setInterval(pintarInterface, 300);
     setInterval(redeDeSeguranca, 1500);
-    // Cada troca de tela remonta os botões, então a marca do endereço precisa
-    // ser reposta de tempo em tempo, e não uma única vez no início.
-    mostrarEnderecos();
-    setInterval(mostrarEnderecos, 1500);
     window.addEventListener('scroll', pintarInterface, { passive: true });
     caoDeGuarda();
     laco();

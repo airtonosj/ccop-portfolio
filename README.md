@@ -85,15 +85,12 @@ inferior direito mostra a tela atual e a barra no topo, a posição na tela.
 
 ### Links de sistema no telão
 
-Num monitor de parede um botão não serve para nada, então o modo apresentação
-trata os botões "Abrir o sistema" de outra forma:
-
-- **O endereço aparece escrito** embaixo do rótulo do botão (`ratchetapp.netlify.app`,
-  por exemplo), para quem estiver olhando anotar e abrir no seu computador.
-- **O clique não navega.** Em quiosque, abrir o sistema numa aba nova cobriria a
-  apresentação sem barra de endereço nem como fechá-la — o telão ficaria preso ali,
-  e nem o cão de guarda resolveria, porque nessa aba o `apresentacao.js` não roda.
-  No lugar da navegação, o endereço aparece no centro da tela por alguns segundos.
+Os botões "Abrir o sistema" (TEMPUS e RATCHET) **não navegam** no modo
+apresentação. Em quiosque, abrir o sistema numa aba nova cobriria a apresentação
+sem barra de endereço nem como fechá-la — o telão ficaria preso ali, e nem o cão
+de guarda resolveria, porque nessa aba o `apresentacao.js` não roda. No lugar da
+navegação, o endereço aparece no centro da tela por alguns segundos, para quem
+tocou anotar e abrir no seu computador.
 
 Sem `?tv=1` os botões são links externos comuns e abrem em nova aba, como sempre.
 
