@@ -20,6 +20,10 @@
    Interação humana pausa o laço (alguém chegou perto para olhar); ele volta
    sozinho depois de um tempo. Espaço alterna pausa fixa; setas avançam ou
    voltam de tela.
+
+   Os botões "Abrir o sistema" (TEMPUS e RATCHET) recebem tratamento próprio
+   aqui: no telão o endereço aparece escrito embaixo do rótulo, e o clique não
+   navega — ver `mostrarEnderecos` e `protegerLinksExternos`.
    =========================================================================== */
 (function () {
   'use strict';
@@ -132,6 +136,21 @@
     });
   }
 
+  /* Num telão o botão "Abrir o sistema" não leva a nada: ninguém clica num
+     monitor pendurado na parede. Escrever o endereço embaixo do rótulo é o que
+     torna o link útil ali — quem está olhando anota e abre no seu computador.
+     O atributo é lido pelo `::after` do CSS abaixo; o React não gerencia
+     `data-*` que não criou, então a marca sobrevive às re-renderizações e não
+     mexe na árvore de elementos dele. */
+  function mostrarEnderecos() {
+    document.querySelectorAll('a[target="_blank"]:not([data-tv-url])').forEach(function (a) {
+      try {
+        var u = new URL(a.href);
+        a.setAttribute('data-tv-url', u.host + (u.pathname === '/' ? '' : u.pathname));
+      } catch (e) { /* href fora do padrão: deixa o botão como estava */ }
+    });
+  }
+
   /* Gatilhos por tela: coisas que valem ser acionadas sozinhas para o telão
      mostrar o sistema em funcionamento, não uma tela estática. */
   function gatilhos(tela) {
@@ -161,8 +180,14 @@
       '#tv-aviso{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10000;',
       '  padding:20px 34px;border-radius:8px;background:rgba(11,15,61,.94);border:1px solid rgba(255,196,0,.45);',
       "  color:#FFC400;font-family:'Archivo',system-ui,sans-serif;font-weight:700;font-size:19px;",
-      '  letter-spacing:.04em;opacity:0;transition:opacity .25s;pointer-events:none}',
+      '  letter-spacing:.04em;opacity:0;transition:opacity .25s;pointer-events:none;',
+      '  max-width:80vw;text-align:center;line-height:1.45;overflow-wrap:anywhere}',
       '#tv-aviso.on{opacity:1}',
+      /* Endereço do sistema escrito embaixo do rótulo do próprio botão. */
+      'a[data-tv-url]{flex-wrap:wrap}',
+      'a[data-tv-url]::after{content:attr(data-tv-url);flex:0 0 100%;',
+      "  font-family:'IBM Plex Mono',ui-monospace,monospace;font-weight:500;font-size:11px;",
+      '  letter-spacing:.06em;text-transform:none;opacity:.72}',
       /* Num telão ninguém toca na tela nem arrasta tabela. */
       '.r-burger,.r-table-hint{display:none !important}'
     ].join('');
@@ -190,6 +215,15 @@
     document.body.appendChild(aviso);
   }
 
+  /* Recado passageiro no centro da tela. Tem prioridade sobre o aviso de pausa
+     porque só aparece em resposta a alguém que acabou de tocar em algo. */
+  var mensagem = '', mensagemAte = 0;
+  function avisar(texto, ms) {
+    mensagem = texto;
+    mensagemAte = Date.now() + (ms || 7000);
+    pintarInterface();
+  }
+
   function pintarInterface() {
     var max = alturaRolavel();
     var prog = max > 0 ? Math.min(1, window.scrollY / max) : 1;
@@ -197,8 +231,10 @@
     pontos.forEach(function (d, i) { d.classList.toggle('on', i === indiceTela % TELAS.length); });
     var nome = ROTULOS[TELAS[indiceTela % TELAS.length]] || '';
     textoPilula.textContent = emPausa() ? 'pausado' : nome;
-    aviso.classList.toggle('on', pausaFixa);
-    if (pausaFixa) aviso.textContent = 'Apresentação pausada — espaço para retomar';
+    var comMensagem = Date.now() < mensagemAte;
+    aviso.classList.toggle('on', comMensagem || pausaFixa);
+    if (comMensagem) aviso.textContent = mensagem;
+    else if (pausaFixa) aviso.textContent = 'Apresentação pausada — espaço para retomar';
   }
 
   // ------------------------------------------------------ pausa e interação
@@ -237,6 +273,24 @@
     });
 
     mostrarCursor();
+  }
+
+  /* Em quiosque, clicar em "Abrir o sistema" abre o TEMPUS ou o RATCHET numa
+     aba em cima da apresentação — e não há barra de endereço nem como fechá-la
+     sem teclado. O telão fica preso no sistema indefinidamente, sem que o cão
+     de guarda possa socorrer: naquela aba este script não roda. Por isso o
+     clique não navega; mostra o endereço, que é o que interessa a quem tocou.
+     Captura na descida para decidir antes de qualquer handler do componente. */
+  function protegerLinksExternos() {
+    document.addEventListener('click', function (e) {
+      var alvo = e.target;
+      var a = alvo && alvo.closest ? alvo.closest('a[target="_blank"]') : null;
+      if (!a) return;
+      // Só o `preventDefault`: o evento segue subindo para que `marcarInteracao`
+      // registre a presença de alguém e o laço pause como em qualquer clique.
+      e.preventDefault();
+      avisar('Acesse pelo computador: ' + (a.getAttribute('data-tv-url') || a.href));
+    }, true);
   }
 
   /* Impede o monitor de dormir. Falha silenciosamente onde não há suporte ou
@@ -288,6 +342,7 @@
         irParaTela(tela);
         await esperar(900);        // espera o React montar a tela
         redeDeSeguranca();
+        mostrarEnderecos();       // antes do primeiro passo, para não piscar
 
         await percorrerTela(tela);
       } catch (e) {
@@ -321,12 +376,17 @@
   function iniciar() {
     montarInterface();
     ligarEventos();
+    protegerLinksExternos();
     travarTela();
     document.addEventListener('visibilitychange', function () {
       if (document.visibilityState === 'visible' && !trava) travarTela();
     });
     setInterval(pintarInterface, 300);
     setInterval(redeDeSeguranca, 1500);
+    // Cada troca de tela remonta os botões, então a marca do endereço precisa
+    // ser reposta de tempo em tempo, e não uma única vez no início.
+    mostrarEnderecos();
+    setInterval(mostrarEnderecos, 1500);
     window.addEventListener('scroll', pintarInterface, { passive: true });
     caoDeGuarda();
     laco();

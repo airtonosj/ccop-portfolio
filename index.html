@@ -577,8 +577,8 @@
         <p class="r-sub" style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 25px; line-height: 1.35; margin: 0 0 20px; max-width: 26ch; letter-spacing: -.015em;">Sistema de Conferência e Análise de Abastecimentos</p>
         <p style="font-size: 17px; line-height: 1.68; color: rgba(255,255,255,.7); max-width: 68ch; margin: 0 0 38px; text-wrap: pretty;">Roda diretamente no navegador e consolida os relatórios de abastecimento de diferentes fornecedores e da bomba interna, organizando tudo por veículo. Calcula médias de consumo, identifica dados fora do padrão e auxilia na correção de inconsistências antes do fechamento mensal.</p>
         <div class="r-cta" style="display: flex; flex-wrap: wrap; gap: 14px;">
-          <a href="downloads/Manual-do-Ratchet.pdf" download="Manual-do-Ratchet.pdf" style="display: flex; align-items: center; gap: 10px; background: #FFC400; color: #0B0F3D; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="background:#FFD54A;color:#0B0F3D">Manual em PDF <span style="font-family: 'IBM Plex Mono', monospace;">↓</span></a>
-          <span style="display: flex; align-items: center; gap: 10px; border: 1px dashed rgba(255,255,255,.3); color: rgba(255,255,255,.55); font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; padding: 15px 22px; border-radius: 4px;">Link do sistema — a definir</span>
+          <a href="{{ ratchetUrl }}" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 10px; background: #FFC400; color: #0B0F3D; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="background:#FFD54A;color:#0B0F3D">Abrir o sistema <span style="font-family: 'IBM Plex Mono', monospace;">↗</span></a>
+          <a href="downloads/Manual-do-Ratchet.pdf" download="Manual-do-Ratchet.pdf" style="display: flex; align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,.34); color: #fff; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="border-color:#FFC400;color:#FFC400">Manual em PDF <span style="font-family: 'IBM Plex Mono', monospace;">↓</span></a>
         </div>
       </div>
     </section>
@@ -763,10 +763,12 @@
 const NAVY = '#191E78', GOLD = '#FFC400', RED = '#D93A3A', GREEN = '#0F9E6E';
 
 /* ┌─────────────────────────────────────────────────────────────────────────┐
-   │ CONFIGURAÇÃO — único ponto a editar para trocar o endereço do TEMPUS.   │
-   │ Usado nos botões "Acessar TEMPUS" (topo) e "Abrir o sistema" (projeto). │
+   │ CONFIGURAÇÃO — único ponto a editar para trocar o endereço dos sistemas.│
+   │ TEMPUS  — botões "Acessar TEMPUS" (topo) e "Abrir o sistema" (projeto). │
+   │ RATCHET — botão "Abrir o sistema" na vista do projeto.                  │
    └─────────────────────────────────────────────────────────────────────────┘ */
 const TEMPUS_URL = 'https://web-production-e9c8d.up.railway.app/dashboard';
+const RATCHET_URL = 'https://ratchetapp.netlify.app/';
 
 /* Roteamento por hash — dá endereço próprio a cada página do portfólio
    (#/tempus, #/ratchet), de modo que o link possa ser compartilhado, o F5
@@ -979,6 +981,7 @@ class Component extends DCLogic {
     return {
       ano: '2026',
       appUrl: TEMPUS_URL,
+      ratchetUrl: RATCHET_URL,
       isHome: s.view === 'home', isTempus: s.view === 'tempus', isRatchet: s.view === 'ratchet',
       goHome: this.go('home'), goTempus: this.go('tempus'), goRatchet: this.go('ratchet'),
       irSetor: this.irParaSecao('setor'), irAtividades: this.irParaSecao('atividades'),

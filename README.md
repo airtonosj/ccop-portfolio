@@ -32,8 +32,8 @@ Renomear o repositório ou apontar um domínio próprio muda a URL. Nesse caso a
 | `robots.txt` | linha `Sitemap:` |
 | `sitemap.xml` | as quatro tags `<loc>` |
 
-> Este repositório é **público** — os nomes dos responsáveis pelas atividades e o
-> endereço do TEMPUS ficam visíveis. Para ocultar os nomes sem mexer no conteúdo,
+> Este repositório é **público** — os nomes dos responsáveis pelas atividades e os
+> endereços do TEMPUS e do RATCHET ficam visíveis. Para ocultar os nomes sem mexer no conteúdo,
 > passe a prop `mostrarResponsaveis` como `false`: os cartões passam a exibir
 > "CCOP" no lugar da pessoa.
 
@@ -83,6 +83,20 @@ Pensado para ficar sozinho, mas atende quem chega perto:
 O cursor do mouse desaparece após 4s parado. O ponteiro de progresso no canto
 inferior direito mostra a tela atual e a barra no topo, a posição na tela.
 
+### Links de sistema no telão
+
+Num monitor de parede um botão não serve para nada, então o modo apresentação
+trata os botões "Abrir o sistema" de outra forma:
+
+- **O endereço aparece escrito** embaixo do rótulo do botão (`ratchetapp.netlify.app`,
+  por exemplo), para quem estiver olhando anotar e abrir no seu computador.
+- **O clique não navega.** Em quiosque, abrir o sistema numa aba nova cobriria a
+  apresentação sem barra de endereço nem como fechá-la — o telão ficaria preso ali,
+  e nem o cão de guarda resolveria, porque nessa aba o `apresentacao.js` não roda.
+  No lugar da navegação, o endereço aparece no centro da tela por alguns segundos.
+
+Sem `?tv=1` os botões são links externos comuns e abrem em nova aba, como sempre.
+
 ### Deixando no ar em um Windows
 
 Chrome em modo quiosque (tela cheia, sem barra de endereço):
@@ -105,7 +119,10 @@ Sair do quiosque: `Alt`+`F4`.
 | Pendência | Onde |
 | --- | --- |
 | Endereço definitivo do TEMPUS | `index.html`, constante `TEMPUS_URL` (um único lugar) |
-| Link do sistema Ratchet | `index.html`, o texto "Link do sistema — a definir" na vista do Ratchet |
+
+Os dois endereços de sistema ficam lado a lado no topo do bloco de lógica do
+`index.html` — `TEMPUS_URL` e `RATCHET_URL` (<https://ratchetapp.netlify.app/>).
+Trocar um deles ali muda todos os botões que apontam para o sistema.
 
 Para trocar um print de sistema, basta sobrescrever o arquivo em `assets/`
 mantendo o nome. As molduras usam `object-fit: contain`, então qualquer
