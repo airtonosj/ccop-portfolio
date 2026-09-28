@@ -61,8 +61,8 @@
         A Coordenação de Controle Operação e Produção (CCOP) da Edeconsil monitora, audita e
         automatiza a informação operacional da frota — telemetria, abastecimentos, planos diários
         de equipamentos, quilometragem produzida, manutenção e rateio de custos. O setor mantém
-        dois sistemas próprios em operação: <strong>TEMPUS</strong> (gestão de planos diários de
-        equipamentos) e <strong>RATCHET</strong> (conferência e análise de abastecimentos).
+        dois sistemas próprios em operação: <strong>TEMPUS</strong> (gestão de frota e planos diários
+        de equipamentos) e <strong>RATCHET</strong> (conferência e análise de abastecimentos).
       </p>
       <p style="font-size: 15px; line-height: 1.6; color: rgba(255,255,255,.75); margin: 0 0 12px;">Os manuais em PDF continuam acessíveis diretamente:</p>
       <ul style="font-size: 15px; line-height: 2; padding-left: 20px; margin: 0;">
@@ -401,8 +401,8 @@
           <h1 class="r-h1-proj" style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 62px; letter-spacing: .02em; margin: 0; color: #FFC400;">TEMPUS</h1>
           <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #34D399; border: 1px solid rgba(52,211,153,.4); padding: 6px 11px;">Em operação</span>
         </div>
-        <p class="r-sub" style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 25px; line-height: 1.35; margin: 0 0 20px; max-width: 26ch; letter-spacing: -.015em;">Sistema de Gestão de Planos Diários de Equipamentos</p>
-        <p style="font-size: 17px; line-height: 1.68; color: rgba(255,255,255,.7); max-width: 68ch; margin: 0 0 38px; text-wrap: pretty;">Centraliza e otimiza o controle dos PDEs utilizados nas obras e centros de responsabilidade, acompanhando a utilização diária dos equipamentos e mantendo um histórico confiável das movimentações da frota. Projetado para substituir controles descentralizados e reduzir a dependência de planilhas e processos manuais.</p>
+        <p class="r-sub" style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 25px; line-height: 1.35; margin: 0 0 20px; max-width: 26ch; letter-spacing: -.015em;">Sistema de Gestão de Frota e Planos Diários de Equipamentos</p>
+        <p style="font-size: 17px; line-height: 1.68; color: rgba(255,255,255,.7); max-width: 68ch; margin: 0 0 38px; text-wrap: pretty;">Centraliza e otimiza o controle dos PDEs utilizados nas obras e centros de responsabilidade, acompanhando a utilização diária dos equipamentos e mantendo um histórico confiável das movimentações da frota. Reúne ainda a ficha de cada equipamento — TAG, chassi ou número de série, ano, modelo e marca —, o lançamento de checklists e o registro dos abastecimentos. Projetado para substituir controles descentralizados e reduzir a dependência de planilhas e processos manuais.</p>
         <div class="r-cta" style="display: flex; flex-wrap: wrap; gap: 14px;">
           <a href="{{ appUrl }}" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 10px; background: #FFC400; color: #0B0F3D; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="background:#FFD54A;color:#0B0F3D">Abrir o sistema <span style="font-family: 'IBM Plex Mono', monospace;">↗</span></a>
           <a href="downloads/Manual-do-ADM-da-Obra.pdf" download="Manual-do-ADM-da-Obra.pdf" style="display: flex; align-items: center; gap: 10px; border: 1px solid rgba(255,255,255,.34); color: #fff; font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 14.5px; padding: 15px 26px; border-radius: 4px;" style-hover="border-color:#FFC400;color:#FFC400">Manual do ADM da Obra <span style="font-family: 'IBM Plex Mono', monospace;">↓</span></a>
@@ -463,7 +463,7 @@
           <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: #8A8FB0; margin-bottom: 18px;">Funcionalidades</div>
           <h2 class="r-h2-sm" style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 32px; line-height: 1.18; letter-spacing: -.02em; margin: 0 0 26px;">O que o sistema faz</h2>
           <div class="r-cols-2s" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <sc-for list="{{ tempusFuncs }}" as="f" hint-placeholder-count="16">
+            <sc-for list="{{ tempusFuncs }}" as="f" hint-placeholder-count="20">
               <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: #4B4F70; background: #FAFBFF; border: 1px solid #EEF0F7; padding: 13px 14px;">
                 <span style="color: #C79600; font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 1px;">▸</span>{{ f }}
               </div>
@@ -767,7 +767,7 @@ const NAVY = '#191E78', GOLD = '#FFC400', RED = '#D93A3A', GREEN = '#0F9E6E';
    │ TEMPUS  — botões "Acessar TEMPUS" (topo) e "Abrir o sistema" (projeto). │
    │ RATCHET — botão "Abrir o sistema" na vista do projeto.                  │
    └─────────────────────────────────────────────────────────────────────────┘ */
-const TEMPUS_URL = 'https://web-production-e9c8d.up.railway.app/dashboard';
+const TEMPUS_URL = 'https://tempus.edeconsil.com.br';
 const RATCHET_URL = 'https://ratchetapp.netlify.app/';
 
 /* Roteamento por hash — dá endereço próprio a cada página do portfólio
@@ -1011,9 +1011,9 @@ class Component extends DCLogic {
       filtros, atividades,
 
       projetos: [
-        { nome: 'TEMPUS', status: 'Em operação', subtitulo: 'Gestão de Planos Diários de Equipamentos',
-          resumo: 'Centraliza o controle dos PDEs das obras: apontamento diário, horas de operação e marcha lenta, transferências, mobilização e relatórios gerenciais.',
-          chips: ['PWA', 'QR Code', 'OCR', 'Uso em campo'], onOpen: this.go('tempus') },
+        { nome: 'TEMPUS', status: 'Em operação', subtitulo: 'Gestão de Frota e Planos Diários de Equipamentos',
+          resumo: 'Cadastro da frota com a ficha completa de cada equipamento, apontamento diário dos PDEs, checklists, registro de abastecimentos, transferências e relatórios gerenciais.',
+          chips: ['Gestão de frota', 'Checklists', 'PWA', 'QR Code', 'OCR'], onOpen: this.go('tempus') },
         { nome: 'RATCHET', status: 'Em operação', subtitulo: 'Conferência e Análise de Abastecimentos',
           resumo: 'Consolida relatórios de cinco fontes de abastecimento, calcula médias por veículo e destaca inconsistências antes do fechamento mensal.',
           chips: ['Roda no navegador', '.xlsx / .csv', 'Memória de cálculo'], onOpen: this.go('ratchet') }
@@ -1038,9 +1038,9 @@ class Component extends DCLogic {
       statusFg: ok ? GREEN : excede ? RED : '#8A6A00',
       statusBd: ok ? 'rgba(15,158,110,.3)' : excede ? 'rgba(217,58,58,.3)' : 'rgba(255,196,0,.5)',
 
-      tempusFuncs: ['Cadastro e gerenciamento de equipamentos', 'Registro diário dos PDEs', 'Controle de horas de operação e horas disponíveis', 'Consulta e edição dos lançamentos', 'Vinculação a centros de responsabilidade', 'Transferência entre obras', 'Mobilização e desmobilização', 'Consulta de equipamentos desmobilizados', 'Notificações de transferências', 'Pesquisa de equipamentos por TAG', 'Relatórios operacionais e gerenciais', 'Acompanhamento de pendências', 'Aplicativo web progressivo (PWA)', 'Uso em campo com conectividade limitada', 'Leitura de informações por QR Code', 'Captura de dados por OCR'],
+      tempusFuncs: ['Cadastro e gerenciamento da frota', 'Ficha do equipamento com TAG, chassi ou número de série', 'Ano, modelo e marca registrados por equipamento', 'Registro diário dos PDEs', 'Lançamento de checklists', 'Registro de abastecimentos por equipamento', 'Controle de horas de operação e horas disponíveis', 'Consulta e edição dos lançamentos', 'Vinculação a centros de responsabilidade', 'Transferência entre obras', 'Mobilização e desmobilização', 'Consulta de equipamentos desmobilizados', 'Notificações de transferências', 'Pesquisa de equipamentos por TAG', 'Relatórios operacionais e gerenciais', 'Acompanhamento de pendências', 'Aplicativo web progressivo (PWA)', 'Uso em campo com conectividade limitada', 'Leitura de informações por QR Code', 'Captura de dados por OCR'],
       tempusGanhos: [
-        { cod: '01', texto: 'Padronização dos processos e rastreabilidade das informações da frota.' },
+        { cod: '01', texto: 'Padronização dos processos e rastreabilidade da frota: ficha do equipamento, apontamento, checklists e abastecimentos no mesmo lugar.' },
         { cod: '02', texto: 'Identificação rápida de equipamentos sem lançamento e de pendências por obra.' },
         { cod: '03', texto: 'Relatórios prontos para medição, cobrança e tomada de decisão.' },
         { cod: '04', texto: 'Redução de erros manuais e ganho de eficiência no controle operacional.' }

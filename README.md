@@ -111,15 +111,15 @@ Sair do quiosque: `Alt`+`F4`.
 
 ---
 
-## O que falta preencher
+## Endereços dos sistemas
 
-| Pendência | Onde |
+As duas constantes ficam lado a lado no topo do bloco de lógica do `index.html`.
+Trocar uma delas ali muda todos os botões que apontam para aquele sistema:
+
+| Constante | Endereço |
 | --- | --- |
-| Endereço definitivo do TEMPUS | `index.html`, constante `TEMPUS_URL` (um único lugar) |
-
-Os dois endereços de sistema ficam lado a lado no topo do bloco de lógica do
-`index.html` — `TEMPUS_URL` e `RATCHET_URL` (<https://ratchetapp.netlify.app/>).
-Trocar um deles ali muda todos os botões que apontam para o sistema.
+| `TEMPUS_URL` | <https://tempus.edeconsil.com.br> |
+| `RATCHET_URL` | <https://ratchetapp.netlify.app/> |
 
 Para trocar um print de sistema, basta sobrescrever o arquivo em `assets/`
 mantendo o nome. As molduras usam `object-fit: contain`, então qualquer
